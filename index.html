@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Genially Audio Player Editor</title>
+<style>
+  :root{
+    --bg:#f4fbff; --panel:#ffffff; --text:#17313d; --muted:#6d7f88; --accent:#0d4b60; --accent2:#91d9d3; --line:#d7e7ec;
+    --shadow:0 18px 50px rgba(13,75,96,.15);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(135deg,#ecf8ff,#ffffff);color:var(--text);min-height:100vh}
+  .wrap{max-width:1220px;margin:0 auto;padding:28px}
+  header{display:flex;gap:18px;align-items:center;margin-bottom:22px}
+  .logo{width:58px;height:58px;border-radius:18px;background:var(--accent);display:grid;place-items:center;color:#fff;box-shadow:var(--shadow);font-size:29px}
+  h1{font-size:30px;margin:0 0 4px} p.lead{margin:0;color:var(--muted);line-height:1.45}
+  .grid{display:grid;grid-template-columns:1fr 430px;gap:22px;align-items:start}
+  .card{background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:18px;backdrop-filter: blur(8px)}
+  .settings{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .full{grid-column:1/-1}
+  label{display:block;font-size:13px;font-weight:700;margin:0 0 7px;color:#284955}
+  input,select,textarea{width:100%;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--text);padding:12px 13px;font:14px/1.35 inherit;outline:none}
+  textarea{min-height:116px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px}
+  input[type=color]{padding:4px;height:45px}
+  input[type=range]{padding:0;accent-color:var(--accent)}
+  .hint{font-size:12px;color:var(--muted);line-height:1.35;margin-top:6px}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .btn{border:0;border-radius:16px;padding:12px 16px;font-weight:800;cursor:pointer;background:var(--accent);color:#fff;box-shadow:0 10px 22px rgba(13,75,96,.18)}
+  .btn.secondary{background:#e9f5f7;color:var(--accent);box-shadow:none;border:1px solid var(--line)}
+  .btn.warn{background:#263238}
+  .previewBox{min-height:560px;display:flex;align-items:center;justify-content:center;background:linear-gradient(45deg,rgba(13,75,96,.06),rgba(145,217,211,.07));border-radius:20px;position:relative;overflow:hidden}
+  .previewLabel{position:absolute;top:14px;left:14px;font-size:12px;color:var(--muted);background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:999px;padding:7px 10px}
+  iframe{border:0;background:transparent;width:360px;height:560px;max-width:100%}
+  .out{margin-top:16px;display:none}
+  .out textarea{min-height:230px;background:#071b22;color:#d7f7ff;border-color:#143946}
+  .small{font-size:12px;color:var(--muted)}
+  .tabs{display:flex;gap:8px;margin:0 0 14px;flex-wrap:wrap}
+  .tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 12px;font-size:13px;font-weight:800;cursor:pointer;color:var(--accent)}
+  .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .mode{display:none}.mode.active{display:block}
+  @media(max-width:980px){.grid{grid-template-columns:1fr}.previewBox{min-height:460px}.settings{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">♪</div>
+    <div>
+      <h1>Редактор аудиоплеера для Genially</h1>
+      <p class="lead">Настрой внешний вид, подключи аудио с GitHub или raw-ссылками, проверь предпросмотр и получи готовый iframe-код на прозрачном фоне.</p>
+    </div>
+  </header>
+  <div class="grid">
+    <section class="card">
+      <div class="settings">
+        <div>
+          <label>Язык интерфейса плеера</label>
+          <select id="lang">
+            <option value="ru">Русский</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+        <div>
+          <label>Название/подпись репозитория</label>
+          <input id="repoName" value="Chekanaska / audioplayer">
+        </div>
+        <div>
+          <label>Основной цвет корпуса</label>
+          <input id="bodyColor" type="color" value="#0d4b60">
+        </div>
+        <div>
+          <label>Цвет экрана</label>
+          <input id="screenColor" type="color" value="#dff1ff">
+        </div>
+        <div>
+          <label>Акцент / кнопки</label>
+          <input id="accentColor" type="color" value="#123f50">
+        </div>
+        <div>
+          <label>Цвет прогресса</label>
+          <input id="progressColor" type="color" value="#78cfc8">
+        </div>
+        <div>
+          <label>Цвет карточки картинки</label>
+          <input id="coverBg" type="color" value="#a9ded8">
+        </div>
+        <div>
+          <label>Цвет текста</label>
+          <input id="textColor" type="color" value="#174253">
+        </div>
+        <div>
+          <label>Ширина плеера, px</label>
+          <input id="playerW" type="number" min="240" max="700" value="360">
+        </div>
+        <div>
+          <label>Высота iframe, px</label>
+          <input id="frameH" type="number" min="420" max="900" value="560">
+        </div>
+        <div class="full">
+          <label>Картинка в плеере</label>
+          <input id="coverUrl" value="" placeholder="https://.../cover.png или оставить пустым для иконки ноты">
+          <div class="hint">Лучше использовать прямую ссылку на изображение: raw.githubusercontent.com, GitHub raw, CDN, Imgur direct и т.п.</div>
+        </div>
+        <div class="full">
+          <div class="tabs">
+            <button class="tab active" data-mode="raw">Raw-ссылки</button>
+            <button class="tab" data-mode="github">Папка GitHub</button>
+          </div>
+          <div id="mode_raw" class="mode active">
+            <label>Ссылки на аудиофайлы raw, по одной на строку</label>
+            <textarea id="rawLinks" spellcheck="false">https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3
+https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3
+https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3</textarea>
+            <div class="hint">Самый надежный вариант для Genially. Поддерживаются mp3, ogg, wav, m4a, aac.</div>
+          </div>
+          <div id="mode_github" class="mode">
+            <label>Ссылка на папку GitHub</label>
+            <input id="githubFolder" placeholder="https://github.com/user/repo/tree/main/music">
+            <div class="hint">Работает для публичных репозиториев через GitHub API. Если Genially или браузер заблокирует запрос, используй raw-ссылки выше.</div>
+          </div>
+        </div>
+        <div class="full row">
+          <button class="btn secondary" id="refreshBtn">Обновить предпросмотр</button>
+          <button class="btn" id="codeBtn">Получить код</button>
+          <button class="btn warn" id="copyBtn" style="display:none">Скопировать код</button>
+          <span class="small" id="copyStatus"></span>
+        </div>
+      </div>
+      <div class="out" id="outBox">
+        <label>Готовый код для вставки в Genially</label>
+        <textarea id="outCode" spellcheck="false"></textarea>
+        <div class="hint">Вставляй целиком как HTML/Embed. Код уже внутри iframe srcdoc, фон прозрачный.</div>
+      </div>
+    </section>
+    <aside class="card">
+      <div class="previewBox">
+        <div class="previewLabel">Предпросмотр</div>
+        <iframe id="preview" allow="autoplay" title="audio player preview"></iframe>
+      </div>
+    </aside>
+  </div>
+</div>
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const controls = ['lang','repoName','bodyColor','screenColor','accentColor','progressColor','coverBg','textColor','playerW','frameH','coverUrl','rawLinks','githubFolder'];
+  let mode = 'raw';
+
+  document.querySelectorAll('.tab').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      mode = btn.dataset.mode;
+      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.mode').forEach(m=>m.classList.remove('active'));
+      btn.classList.add('active'); $('mode_'+mode).classList.add('active');
+      renderPreview();
+    });
+  });
+
+  function esc(s){return String(s ?? '').replace(/[&<>'"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+  function srcdocEscape(html){return html.replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function cleanLines(v){return v.split(/\n+/).map(x=>x.trim()).filter(Boolean)}
+
+  function getConfig(){
+    return {
+      lang:$('lang').value,
+      repoName:$('repoName').value.trim() || 'Audio Player',
+      bodyColor:$('bodyColor').value,
+      screenColor:$('screenColor').value,
+      accentColor:$('accentColor').value,
+      progressColor:$('progressColor').value,
+      coverBg:$('coverBg').value,
+      textColor:$('textColor').value,
+      playerW:Math.max(240, Math.min(700, parseInt($('playerW').value||360,10))),
+      frameH:Math.max(420, Math.min(900, parseInt($('frameH').value||560,10))),
+      coverUrl:$('coverUrl').value.trim(),
+      sourceMode:mode,
+      rawLinks:cleanLines($('rawLinks').value),
+      githubFolder:$('githubFolder').value.trim()
+    };
+  }
+
+  function playerHTML(cfg){
+    const data = JSON.stringify(cfg).replace(/</g,'\\u003c');
+    return `<!doctype html>
+<html lang="${esc(cfg.lang)}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box}html,body{margin:0;background:transparent;font-family:Inter,Arial,sans-serif;color:${cfg.textColor};overflow:hidden}button{font:inherit}
+.ap-wrap{width:100%;height:100vh;display:flex;align-items:center;justify-content:center;background:transparent;padding:8px}
+.ap-phone{width:min(${cfg.playerW}px,100%);height:calc(100vh - 16px);max-height:720px;min-height:420px;background:${cfg.bodyColor};border:3px solid rgba(0,0,0,.22);border-radius:20px;padding:20px 16px 24px;box-shadow:0 22px 45px rgba(0,0,0,.18);position:relative;display:flex;flex-direction:column;align-items:center}
+.ap-speaker{width:54px;height:6px;background:rgba(255,255,255,.78);border-radius:999px;margin:0 auto 14px;box-shadow:inset 0 -1px 2px rgba(0,0,0,.2)}
+.ap-screen{width:100%;flex:1;min-height:0;background:${cfg.screenColor};border:2px solid rgba(0,0,0,.18);padding:22px 16px 16px;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.ap-screen:before,.ap-screen:after{content:"";position:absolute;top:-15%;height:140%;width:54px;background:rgba(255,255,255,.28);transform:rotate(30deg);pointer-events:none}.ap-screen:before{left:38%}.ap-screen:after{left:72%;opacity:.72}
+.ap-content{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;min-height:0}
+.ap-cover{width:46%;aspect-ratio:1/1;margin:0 auto 18px;border-radius:18px;background:${cfg.coverBg};display:grid;place-items:center;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,.08)}
+.ap-cover img{width:100%;height:100%;object-fit:cover;display:block}.ap-note{font-size:54px;color:${cfg.accentColor};line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}
+.ap-repo{font-size:12px;font-weight:800;letter-spacing:.02em;opacity:.9;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ap-title{font-size:14px;font-weight:900;margin-bottom:8px;min-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ap-progress{width:100%;height:5px;background:rgba(30,70,80,.18);border-radius:999px;cursor:pointer;position:relative;overflow:hidden}.ap-fill{height:100%;width:0;background:${cfg.progressColor};border-radius:999px}.ap-times{display:flex;justify-content:space-between;font-size:10px;margin-top:5px;opacity:.78}
+.ap-controls{display:flex;align-items:center;justify-content:space-between;margin:16px 0 10px}.ap-btn{border:0;background:transparent;color:${cfg.accentColor};cursor:pointer;display:grid;place-items:center;padding:5px;border-radius:12px}.ap-btn:hover{background:rgba(255,255,255,.28)}.ap-btn svg{width:28px;height:28px;fill:currentColor}.ap-play svg{width:44px;height:44px}.ap-toggle.active{background:${cfg.progressColor};color:${cfg.accentColor}}
+.ap-visual{height:34px;display:flex;align-items:end;justify-content:center;gap:5px;margin:2px 0 10px}.ap-bar{width:5px;border-radius:999px;background:${cfg.progressColor};height:8px;opacity:.85;animation:none}.playing .ap-bar{animation:apBeat .8s ease-in-out infinite}.playing .ap-bar:nth-child(2){animation-delay:.12s}.playing .ap-bar:nth-child(3){animation-delay:.24s}.playing .ap-bar:nth-child(4){animation-delay:.08s}.playing .ap-bar:nth-child(5){animation-delay:.18s}@keyframes apBeat{0%,100%{height:8px}45%{height:30px}}
+.ap-bottom{margin-top:auto;display:flex;gap:8px;justify-content:center}.ap-pill{border:0;border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.42);color:${cfg.accentColor};font-weight:900;cursor:pointer;font-size:12px}.ap-status{text-align:center;font-size:12px;opacity:.75;margin-top:7px;min-height:15px}
+.ap-list{position:absolute;z-index:9;left:10px;right:10px;bottom:10px;max-height:56%;background:rgba(255,255,255,.96);border:1px solid rgba(0,0,0,.08);border-radius:18px;box-shadow:0 14px 34px rgba(0,0,0,.18);padding:10px;display:none;overflow:auto}.ap-list.open{display:block}.ap-list-head{display:flex;justify-content:space-between;align-items:center;font-weight:900;font-size:13px;margin:3px 4px 8px}.ap-close{border:0;background:transparent;font-size:22px;line-height:1;cursor:pointer;color:${cfg.accentColor}}.ap-track{width:100%;border:0;background:transparent;text-align:left;padding:9px 10px;border-radius:12px;font-weight:700;color:${cfg.textColor};cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ap-track:hover,.ap-track.active{background:rgba(120,207,200,.22)}
+@media(max-width:330px){.ap-phone{border-radius:16px;padding:16px 12px 18px}.ap-screen{padding:18px 12px 12px}.ap-cover{width:54%}}
+</style>
+</head>
+<body>
+<div class="ap-wrap">
+  <div class="ap-phone" id="app">
+    <div class="ap-speaker"></div>
+    <div class="ap-screen">
+      <div class="ap-content">
+        <div class="ap-cover" id="cover"></div>
+        <div class="ap-repo" id="repo"></div>
+        <div class="ap-title" id="title"></div>
+        <div class="ap-progress" id="progress"><div class="ap-fill" id="fill"></div></div>
+        <div class="ap-times"><span id="cur">0:00</span><span id="dur">0:00</span></div>
+        <div class="ap-controls">
+          <button class="ap-btn" id="prev" title="prev"><svg viewBox="0 0 64 64"><path d="M10 32 34 16v32L10 32Zm25 0 24-16v32L35 32Z"/></svg></button>
+          <button class="ap-btn ap-play" id="play" title="play"><svg id="playIcon" viewBox="0 0 64 64"><path d="M22 14v36l30-18L22 14Z"/></svg></button>
+          <button class="ap-btn" id="next" title="next"><svg viewBox="0 0 64 64"><path d="M54 32 30 16v32l24-16Zm-25 0L5 16v32l24-16Z"/></svg></button>
+        </div>
+        <div class="ap-visual"><span class="ap-bar"></span><span class="ap-bar"></span><span class="ap-bar"></span><span class="ap-bar"></span><span class="ap-bar"></span></div>
+        <div class="ap-bottom">
+          <button class="ap-pill ap-toggle" id="shuffle">RANDOM</button>
+          <button class="ap-pill" id="playlist">PLAYLIST</button>
+        </div>
+        <div class="ap-status" id="status"></div>
+      </div>
+      <div class="ap-list" id="list"><div class="ap-list-head"><span id="listTitle"></span><button class="ap-close" id="closeList">×</button></div><div id="tracks"></div></div>
+    </div>
+    <audio id="audio" preload="metadata"></audio>
+  </div>
+</div>
+<script>
+const CFG=${data};
+const T={ru:{song:'Песня',loading:'Загрузка...',empty:'Нет аудиофайлов',error:'Не удалось загрузить аудио',playlist:'Плейлист',random:'Случайно',repo:'Репозиторий'},en:{song:'Song',loading:'Loading...',empty:'No audio files',error:'Could not load audio',playlist:'Playlist',random:'Random',repo:'Repository'}}[CFG.lang]||{};
+const exts=['.mp3','.ogg','.wav','.m4a','.aac'];
+const app=document.getElementById('app'),audio=document.getElementById('audio'),cover=document.getElementById('cover'),repo=document.getElementById('repo'),title=document.getElementById('title'),fill=document.getElementById('fill'),cur=document.getElementById('cur'),dur=document.getElementById('dur'),status=document.getElementById('status'),tracksEl=document.getElementById('tracks'),list=document.getElementById('list'),playIcon=document.getElementById('playIcon');
+let tracks=[],i=0,shuffle=false;
+repo.textContent=CFG.repoName||T.repo;
+document.getElementById('shuffle').textContent=T.random;
+document.getElementById('playlist').textContent=T.playlist;
+document.getElementById('listTitle').textContent=T.playlist;
+cover.innerHTML=CFG.coverUrl?'<img alt="cover" src="'+safe(CFG.coverUrl)+'">':'<div class="ap-note">♫</div>';
+function safe(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function nameFromUrl(u){try{let p=decodeURIComponent(new URL(u).pathname.split('/').pop()||'');return p.replace(/\.(mp3|ogg|wav|m4a|aac)$/i,'').replace(/[-_]+/g,' ')}catch(e){return (u.split('/').pop()||T.song).replace(/\?.*/,'')}}
+function githubApi(url){try{const u=new URL(url);const parts=u.pathname.split('/').filter(Boolean);const user=parts[0],repo=parts[1];let branch='main',path='';const tree=parts.indexOf('tree');if(tree>-1){branch=parts[tree+1]||'main';path=parts.slice(tree+2).join('/')}return {api:'https://api.github.com/repos/'+user+'/'+repo+'/contents/'+path+'?ref='+branch,rawBase:'https://raw.githubusercontent.com/'+user+'/'+repo+'/'+branch+'/'+path.replace(/^\//,'')}}catch(e){return null}}
+async function loadTracks(){status.textContent=T.loading;title.textContent='';tracks=[];
+  if(CFG.sourceMode==='github' && CFG.githubFolder){
+    const g=githubApi(CFG.githubFolder);
+    if(g){try{const r=await fetch(g.api);const arr=await r.json();if(Array.isArray(arr)){tracks=arr.filter(x=>x.type==='file' && exts.some(e=>x.name.toLowerCase().endsWith(e))).map(x=>({title:x.name.replace(/\.(mp3|ogg|wav|m4a|aac)$/i,'').replace(/[-_]+/g,' '),url:x.download_url||x.html_url.replace('github.com','raw.githubusercontent.com').replace('/blob/','/')}));}}catch(e){}}
+  } else {
+    tracks=(CFG.rawLinks||[]).filter(u=>/^https?:\/\//i.test(u)).filter(u=>exts.some(e=>u.toLowerCase().split('?')[0].endsWith(e))).map(u=>({title:nameFromUrl(u),url:u}));
+  }
+  if(!tracks.length){status.textContent=T.empty;title.textContent=T.empty;renderList();return}
+  status.textContent='';setTrack(0);renderList();
+}
+function setTrack(n){i=(n+tracks.length)%tracks.length;audio.src=tracks[i].url;title.textContent=tracks[i].title||T.song;fill.style.width='0%';cur.textContent='0:00';dur.textContent='0:00';renderList()}
+function fmt(s){if(!isFinite(s))return'0:00';s=Math.floor(s);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function playPause(){if(!tracks.length)return;if(audio.paused){audio.play().catch(()=>status.textContent=T.error)}else audio.pause()}
+function next(){if(!tracks.length)return;setTrack(shuffle?Math.floor(Math.random()*tracks.length):i+1);audio.play().catch(()=>{})}
+function prev(){if(!tracks.length)return;setTrack(i-1);audio.play().catch(()=>{})}
+function renderList(){tracksEl.innerHTML='';tracks.forEach((t,idx)=>{const b=document.createElement('button');b.className='ap-track'+(idx===i?' active':'');b.textContent=(idx+1)+'. '+(t.title||T.song);b.onclick=()=>{setTrack(idx);list.classList.remove('open');audio.play().catch(()=>{})};tracksEl.appendChild(b)})}
+document.getElementById('play').onclick=playPause;document.getElementById('next').onclick=next;document.getElementById('prev').onclick=prev;document.getElementById('playlist').onclick=()=>list.classList.toggle('open');document.getElementById('closeList').onclick=()=>list.classList.remove('open');
+document.getElementById('shuffle').onclick=e=>{shuffle=!shuffle;e.currentTarget.classList.toggle('active',shuffle)};
+audio.addEventListener('play',()=>{app.classList.add('playing');playIcon.innerHTML='<path d="M19 14h10v36H19V14Zm16 0h10v36H35V14Z"/>'});
+audio.addEventListener('pause',()=>{app.classList.remove('playing');playIcon.innerHTML='<path d="M22 14v36l30-18L22 14Z"/>'});
+audio.addEventListener('ended',next);audio.addEventListener('loadedmetadata',()=>dur.textContent=fmt(audio.duration));audio.addEventListener('timeupdate',()=>{cur.textContent=fmt(audio.currentTime);fill.style.width=(audio.duration?audio.currentTime/audio.duration*100:0)+'%'});
+document.getElementById('progress').onclick=e=>{if(!audio.duration)return;const r=e.currentTarget.getBoundingClientRect();audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration};
+loadTracks();
+<\/script>
+</body></html>`;
+  }
+
+  function iframeCode(cfg){
+    const html = playerHTML(cfg);
+    return `<iframe srcdoc='${srcdocEscape(html)}' style="width:${cfg.playerW}px;height:${cfg.frameH}px;border:0;background:transparent;overflow:hidden;" allow="autoplay" scrolling="no"></iframe>`;
+  }
+
+  function renderPreview(){
+    const cfg=getConfig();
+    const frame=$('preview');
+    frame.style.width=cfg.playerW+'px'; frame.style.height=cfg.frameH+'px';
+    frame.srcdoc=playerHTML(cfg);
+  }
+  function makeCode(){
+    const cfg=getConfig();
+    const code=iframeCode(cfg);
+    $('outCode').value=code;
+    $('outBox').style.display='block';
+    $('copyBtn').style.display='inline-block';
+    $('copyStatus').textContent='';
+  }
+
+  $('refreshBtn').addEventListener('click',renderPreview);
+  $('codeBtn').addEventListener('click',()=>{renderPreview();makeCode();});
+  $('copyBtn').addEventListener('click',async()=>{
+    $('outCode').select();
+    try{await navigator.clipboard.writeText($('outCode').value);$('copyStatus').textContent='Скопировано';}
+    catch(e){document.execCommand('copy');$('copyStatus').textContent='Скопировано';}
+  });
+  controls.forEach(id=>$(id).addEventListener('input',()=>{clearTimeout(window.__apT);window.__apT=setTimeout(renderPreview,250)}));
+  renderPreview();
+})();
+</script>
+</body>
+</html>
