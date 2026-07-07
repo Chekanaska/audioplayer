@@ -2,117 +2,69 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Genially Audio Player Editor v2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Audio Player</title>
 <style>
-:root{--bg:#f3f7fb;--panel:#fff;--ink:#123;--muted:#667085;--accent:#1c6b7a;--line:#d8e3ea}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(135deg,#eef7fb,#fff);color:var(--ink)}
-.wrap{max-width:1180px;margin:0 auto;padding:24px}.hero{display:flex;gap:16px;align-items:center;margin-bottom:18px}.logo{width:52px;height:52px;border-radius:16px;background:#0b3f51;color:#fff;display:grid;place-items:center;font-size:29px;box-shadow:0 10px 30px #0b3f5122}.hero h1{margin:0;font-size:28px}.hero p{margin:5px 0 0;color:var(--muted)}
-.grid{display:grid;grid-template-columns:minmax(360px,1fr) 450px;gap:18px}.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 10px 34px #24506612}.card h2{margin:0 0 12px;font-size:19px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:12px}.field label{display:block;font-weight:700;margin:0 0 6px;font-size:13px}.field small{display:block;color:var(--muted);margin-top:5px;line-height:1.35}.field input[type=text],.field input[type=number],.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;color:var(--ink);font:inherit}.field textarea{min-height:106px;resize:vertical}.field input[type=color]{width:100%;height:42px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:4px}.tabs{display:flex;gap:8px;margin:7px 0 12px}.tab{border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:999px;cursor:pointer;font-weight:800}.tab.active{background:#0b3f51;color:#fff;border-color:#0b3f51}.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}.btn{border:0;background:#0b3f51;color:white;border-radius:13px;padding:11px 14px;font-weight:800;cursor:pointer}.btn.secondary{background:#e9f2f5;color:#0b3f51}.btn.warn{background:#fbefdf;color:#7a4400}.status{margin-top:10px;color:var(--muted);font-size:13px;line-height:1.4}.status b{color:#0b3f51}.previewBox{background:repeating-linear-gradient(45deg,#f6f6f6 0 14px,#fff 14px 28px);border-radius:18px;min-height:620px;display:grid;place-items:center;border:1px solid var(--line);overflow:hidden}.previewBox iframe{border:0;width:100%;height:620px;background:transparent}.code{width:100%;min-height:260px;margin-top:12px;border:1px solid #b9ced8;border-radius:15px;padding:12px;font-family:Consolas,monospace;font-size:12px;white-space:pre;overflow:auto}.hint{padding:12px;border-radius:14px;background:#eef8fb;border:1px solid #cbe4ed;color:#244b58;margin-bottom:12px;line-height:1.45}@media(max-width:980px){.grid{grid-template-columns:1fr}.previewBox iframe{height:560px}.previewBox{min-height:560px}}
+:root{--body:#0b3f51;--screen:#dff1ff;--accent:#12384a;--progress:#75c8cf;--cover:#b7e3dd;--text:#12384a}
+*{box-sizing:border-box} html,body{margin:0;min-height:100%;background:transparent;font-family:Arial,sans-serif;color:var(--text)}
+body{display:grid;place-items:center;padding:20px}.wrap{text-align:center}.brand{font:700 20px/1.2 Arial,sans-serif;margin:0 0 14px;color:#0d1b2a}.brand b{font-weight:900}.phone{width:290px;background:var(--body);border:2px solid rgba(0,0,0,.35);border-radius:17px;padding:22px 13px 26px;box-shadow:0 18px 30px rgba(0,0,0,.14);position:relative}.speaker{width:48px;height:5px;border-radius:999px;background:rgba(255,255,255,.78);margin:0 auto 12px}.screen{background:var(--screen);height:385px;position:relative;overflow:hidden;padding:36px 14px 14px}.screen:before,.screen:after{content:"";position:absolute;inset:-20%;background:linear-gradient(115deg,transparent 0 35%,rgba(255,255,255,.32) 36% 45%,transparent 46%);pointer-events:none}.screen:after{transform:translateX(45%)}.cover{width:58%;aspect-ratio:1/1;border-radius:14px;background:var(--cover);margin:0 auto 13px;display:grid;place-items:center;overflow:hidden;position:relative;z-index:1}.cover img{width:100%;height:100%;object-fit:cover;display:block}.note{font-size:54px;color:var(--accent)}.repo{font-size:11px;letter-spacing:.04em;margin-bottom:10px;opacity:.82;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:relative;z-index:1}.song{font-size:11px;text-transform:uppercase;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:relative;z-index:1}.bar{height:5px;background:rgba(0,0,0,.12);border-radius:999px;cursor:pointer;overflow:hidden;position:relative;z-index:1}.fill{height:100%;width:0;background:var(--progress);border-radius:999px}.time{display:flex;justify-content:space-between;font-size:8px;margin-top:4px;position:relative;z-index:1}.controls{display:flex;align-items:center;justify-content:space-around;margin-top:16px;position:relative;z-index:1}.cbtn{border:0;background:transparent;color:var(--accent);font-size:24px;line-height:1;cursor:pointer;padding:5px}.play{width:46px;height:46px;border-radius:50%;font-size:34px;display:grid;place-items:center}.mini{font-size:16px;font-weight:900}.active{color:var(--progress);text-shadow:0 0 8px var(--progress)}.viz{height:38px;display:flex;gap:4px;align-items:end;justify-content:center;margin-top:10px;position:relative;z-index:1}.viz i{display:block;width:5px;height:7px;border-radius:999px;background:var(--progress);opacity:.55}.playing .viz i{animation:bounce .75s infinite ease-in-out}.viz i:nth-child(2){animation-delay:.1s}.viz i:nth-child(3){animation-delay:.2s}.viz i:nth-child(4){animation-delay:.35s}.viz i:nth-child(5){animation-delay:.05s}@keyframes bounce{0%,100%{height:8px}50%{height:32px}}.plist{position:absolute;left:12px;right:12px;bottom:12px;max-height:58%;overflow:auto;background:rgba(255,255,255,.96);border:1px solid rgba(0,0,0,.12);border-radius:14px;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,.18);display:none;z-index:5}.plist.open{display:block}.plist h3{margin:0 0 8px;font-size:12px}.track{padding:8px;border-radius:10px;font-size:12px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left}.track:hover,.track.now{background:var(--cover)}.status{font-size:11px;color:#667085;margin-top:10px;max-width:290px}.embed-help{margin-top:12px;font-size:12px}.embed-help code{background:#eef3f6;border-radius:8px;padding:4px 6px}audio{display:none}
 </style>
-</head><body>
+</head>
+<body>
 <div class="wrap">
-  <div class="hero"><div class="logo">♪</div><div><h1>Редактор аудиоплеера для Genially v2</h1><p>Сначала редактор вытаскивает реальные mp3-ссылки, потом встраивает их в готовый iframe. Фон у плеера прозрачный.</p></div></div>
-  <div class="grid">
-    <div class="card">
-      <div class="hint"><b>Важно:</b> ссылка <code>https://chekanaska.github.io/audioplayer/</code> — это не “папка” со списком, а страница. В этой версии редактор понимает GitHub Pages и сам ищет файлы в репозитории.</div>
-      <h2>Настройки</h2>
-      <div class="row">
-        <div class="field"><label>Язык интерфейса</label><select id="lang"><option value="ru">Русский</option><option value="en">English</option></select></div>
-        <div class="field"><label>Подпись репозитория</label><input id="repoLabel" type="text" value="Chekanaska / audioplayer"></div>
-      </div>
-      <div class="row">
-        <div class="field"><label>Цвет корпуса</label><input id="bodyColor" type="color" value="#0b3f51"></div>
-        <div class="field"><label>Цвет экрана</label><input id="screenColor" type="color" value="#dff1ff"></div>
-        <div class="field"><label>Акцент / кнопки</label><input id="accentColor" type="color" value="#113f50"></div>
-        <div class="field"><label>Прогресс</label><input id="progressColor" type="color" value="#7bc8c8"></div>
-        <div class="field"><label>Карточка картинки</label><input id="coverBg" type="color" value="#a7dcd6"></div>
-        <div class="field"><label>Текст</label><input id="textColor" type="color" value="#133d4f"></div>
-      </div>
-      <div class="row">
-        <div class="field"><label>Ширина плеера, px</label><input id="playerW" type="number" min="220" max="520" value="300"></div>
-        <div class="field"><label>Высота iframe, px</label><input id="frameH" type="number" min="420" max="900" value="620"></div>
-      </div>
-      <div class="field"><label>Картинка в плеере</label><input id="cover" type="text" value="https://static.klipy.com/ii/c98c4a4935d23b95805f0befee091d8a/8d/4a/Bui1PgqT.gif"><small>Для Klipy и похожих сайтов добавлен <code>referrerpolicy="no-referrer"</code>. Если сайт всё равно запрещает встраивание, лучше перелить картинку в GitHub/Imgur/CDN.</small></div>
-      <div class="tabs"><button class="tab active" id="rawTab" type="button">Raw-ссылки</button><button class="tab" id="folderTab" type="button">Папка / GitHub Pages</button></div>
-      <div id="rawPanel">
-        <div class="field"><label>Ссылки на аудиофайлы, по одной на строку</label><textarea id="rawLinks">https://chekanaska.github.io/audioplayer/005_WiderWorld2e_SB3_Track_0_5.mp3
-https://chekanaska.github.io/audioplayer/007_WiderWorld2e_SB3_Track_0_7.mp3</textarea><small>Самый надежный вариант для Genially.</small></div>
-      </div>
-      <div id="folderPanel" style="display:none">
-        <div class="field"><label>Ссылка на папку / сайт GitHub Pages</label><input id="folderLink" type="text" value="https://chekanaska.github.io/audioplayer/"><small>Можно вставлять <code>https://github.com/owner/repo/tree/main/folder</code> или <code>https://owner.github.io/repo/folder/</code>.</small></div>
-      </div>
-      <div class="btns"><button class="btn secondary" id="resolveBtn" type="button">Найти аудио</button><button class="btn secondary" id="previewBtn" type="button">Обновить предпросмотр</button><button class="btn" id="codeBtn" type="button">Получить код</button><button class="btn warn" id="copyBtn" type="button">Скопировать код</button></div>
-      <div class="status" id="status">Готово. Уже подставлены твоя картинка и два mp3 из репозитория.</div>
-      <textarea class="code" id="code" spellcheck="false" placeholder="Здесь появится код для Genially"></textarea>
+  <div class="brand">Chekanaska&nbsp;&nbsp;/&nbsp;&nbsp;<b>audioplayer</b></div>
+  <div class="phone">
+    <div class="speaker"></div>
+    <div class="screen">
+      <div class="cover"><img id="cover" src="https://static.klipy.com/ii/c98c4a4935d23b95805f0befee091d8a/8d/4a/Bui1PgqT.gif" referrerpolicy="no-referrer" alt="" onerror="this.remove();document.getElementById('fallback').style.display='block'"><div class="note" id="fallback" style="display:none">♪</div></div>
+      <div class="repo">Chekanaska / audioplayer</div>
+      <div class="song" id="song">Загрузка треков...</div>
+      <div class="bar" id="bar"><div class="fill" id="fill"></div></div>
+      <div class="time"><span id="cur">0:00</span><span id="dur">0:00</span></div>
+      <div class="controls"><button class="cbtn mini" id="shuffle" title="Случайный порядок">⤨</button><button class="cbtn" id="prev">◀◀</button><button class="cbtn play" id="play">▶</button><button class="cbtn" id="next">▶▶</button><button class="cbtn mini" id="list">☰</button></div>
+      <div class="viz"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="plist" id="plist"><h3>Плейлист</h3><div id="tracks"></div></div>
     </div>
-    <div class="card"><h2>Предпросмотр</h2><div class="previewBox"><iframe id="preview" title="preview" allow="autoplay"></iframe></div></div>
+    <audio id="audio" preload="metadata" crossorigin="anonymous"></audio>
   </div>
+  <div class="status" id="status">Если треки не найдутся автоматически, проверь, что mp3 лежат в этом же публичном репозитории.</div>
 </div>
 <script>
-const $ = id => document.getElementById(id);
-const audioExt = /\.(mp3|ogg|wav|m4a|aac)(\?.*)?$/i;
-let mode='raw';
-function setStatus(t){$('status').innerHTML=t}
-function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function jsStr(s){return JSON.stringify(String(s||''))}
-function normalizeGithubUrl(u){
-  u=String(u||'').trim(); if(!u) return '';
-  u=u.replace(/^http:\/\//,'https://');
-  let m=u.match(/^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)$/i);
-  if(m) return `https://raw.githubusercontent.com/${m[1]}/${m[2]}/${m[3]}/${m[4]}`;
-  m=u.match(/^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/raw\/([^\/]+)\/(.+)$/i);
-  if(m) return `https://raw.githubusercontent.com/${m[1]}/${m[2]}/${m[3]}/${m[4]}`;
-  return u;
-}
-function titleFromUrl(u){try{let p=decodeURIComponent(new URL(u).pathname.split('/').pop()||'Audio'); return p.replace(/\.(mp3|ogg|wav|m4a|aac)$/i,'').replace(/[_-]+/g,' ')}catch(e){return 'Audio'}}
-function unique(a){return [...new Set(a.filter(Boolean))]}
-async function resolveFolder(link){
-  link=String(link||'').trim();
-  const urls=[];
-  let m=link.match(/^https:\/\/github\.com\/([^\/]+)\/([^\/]+)(?:\/tree\/([^\/]+)\/?(.*))?$/i);
-  if(m){
-    const owner=m[1], repo=m[2], branch=m[3]||'main', path=(m[4]||'').replace(/^\/+|\/+$/g,'');
-    const api=`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`;
-    const res=await fetch(api,{headers:{'Accept':'application/vnd.github+json'}}); if(!res.ok) throw new Error('GitHub API не открыл папку');
+const AUDIO_EXT=/\.(mp3|ogg|wav|m4a|aac)(\?.*)?$/i;
+const fallbackUrls=[
+  'https://chekanaska.github.io/audioplayer/005_WiderWorld2e_SB3_Track_0_5.mp3',
+  'https://chekanaska.github.io/audioplayer/007_WiderWorld2e_SB3_Track_0_7.mp3'
+];
+let tracks=[],idx=0,random=false;
+const $=id=>document.getElementById(id);
+const a=$('audio'),song=$('song'),play=$('play'),fill=$('fill'),cur=$('cur'),dur=$('dur'),phone=document.querySelector('.phone'),plist=$('plist'),tracksBox=$('tracks'),status=$('status');
+function titleFromUrl(u){try{return decodeURIComponent(new URL(u).pathname.split('/').pop()||'Audio').replace(/\.(mp3|ogg|wav|m4a|aac)$/i,'').replace(/[_-]+/g,' ')}catch(e){return 'Audio'}}
+function fmt(x){if(!isFinite(x))return'0:00';let m=Math.floor(x/60),s=Math.floor(x%60);return m+':'+String(s).padStart(2,'0')}
+function setTracks(urls){tracks=[...new Set(urls)].filter(u=>AUDIO_EXT.test(u)).map(u=>({url:u,title:titleFromUrl(u)})); render(); load(0); status.textContent=tracks.length?'Найдено треков: '+tracks.length:'Треки не найдены';}
+function load(i){if(!tracks.length){song.textContent='Нет аудиофайлов';return}idx=(i+tracks.length)%tracks.length;a.src=tracks[idx].url;song.textContent=tracks[idx].title;[...tracksBox.children].forEach((n,k)=>n.classList.toggle('now',k===idx));}
+function render(){tracksBox.innerHTML='';tracks.forEach((t,i)=>{let d=document.createElement('div');d.className='track';d.textContent=(i+1)+'. '+t.title;d.onclick=()=>{load(i);a.play().catch(showAudioError);plist.classList.remove('open')};tracksBox.appendChild(d)})}
+function next(){if(!tracks.length)return;load(random?Math.floor(Math.random()*tracks.length):idx+1);a.play().catch(showAudioError)}
+function showAudioError(e){status.textContent='Браузер не дал запустить аудио или файл недоступен. Нажми Play ещё раз / проверь mp3-ссылки.'; console.warn(e)}
+async function discover(){
+  try{
+    const host=location.hostname; const path=location.pathname.replace(/^\//,'').replace(/\/[^\/]*$/,'');
+    const m=host.match(/^([^.]+)\.github\.io$/i);
+    if(!m) throw new Error('not github pages');
+    const owner=m[1]; const repo=path.split('/')[0] || 'audioplayer'; const sub=path.split('/').slice(1).join('/');
+    const api=`https://api.github.com/repos/${owner}/${repo}/contents/${sub}?ref=main`;
+    const res=await fetch(api,{headers:{Accept:'application/vnd.github+json'}});
+    if(!res.ok) throw new Error('api failed');
     const arr=await res.json();
-    (Array.isArray(arr)?arr:[]).forEach(x=>{ if(x.type==='file' && audioExt.test(x.name)) urls.push(x.download_url); });
-    return unique(urls);
-  }
-  m=link.match(/^https:\/\/([^\.\/]+)\.github\.io\/([^\/]+)\/?(.*)$/i);
-  if(m){
-    const owner=m[1], repo=m[2], path=(m[3]||'').replace(/^\/+|\/+$/g,'');
-    const api=`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=main`;
-    const res=await fetch(api,{headers:{'Accept':'application/vnd.github+json'}});
-    if(res.ok){ const arr=await res.json(); (Array.isArray(arr)?arr:[]).forEach(x=>{ if(x.type==='file' && audioExt.test(x.name)) urls.push(`https://${owner}.github.io/${repo}/${path?path+'/':''}${encodeURIComponent(x.name).replace(/%20/g,' ')}`); }); }
-    if(!urls.length && owner.toLowerCase()==='chekanaska' && repo.toLowerCase()==='audioplayer'){
-      urls.push('https://chekanaska.github.io/audioplayer/005_WiderWorld2e_SB3_Track_0_5.mp3','https://chekanaska.github.io/audioplayer/007_WiderWorld2e_SB3_Track_0_7.mp3');
-    }
-    return unique(urls);
-  }
-  const res=await fetch(link); const txt=await res.text();
-  [...txt.matchAll(/href=["']([^"']+\.(?:mp3|ogg|wav|m4a|aac))[^"']*["']/gi)].forEach(mm=>urls.push(new URL(mm[1],link).href));
-  return unique(urls);
+    const urls=(Array.isArray(arr)?arr:[]).filter(x=>x.type==='file'&&AUDIO_EXT.test(x.name)).map(x=>`https://${owner}.github.io/${repo}/${sub?sub+'/':''}${encodeURIComponent(x.name).replace(/%20/g,' ')}`);
+    setTracks(urls.length?urls:fallbackUrls);
+  }catch(e){setTracks(fallbackUrls)}
 }
-function settings(){
-  let links=$('rawLinks').value.split(/\n+/).map(normalizeGithubUrl).filter(x=>audioExt.test(x));
-  return {lang:$('lang').value,repoLabel:$('repoLabel').value,bodyColor:$('bodyColor').value,screenColor:$('screenColor').value,accentColor:$('accentColor').value,progressColor:$('progressColor').value,coverBg:$('coverBg').value,textColor:$('textColor').value,playerW:+$('playerW').value||300,frameH:+$('frameH').value||620,cover:normalizeGithubUrl($('cover').value),tracks:links.map(u=>({title:titleFromUrl(u),url:u}))};
-}
-function playerHtml(s){
-const L=s.lang==='en'?{song:'SONG',playlist:'PLAYLIST',empty:'No audio files',shuffle:'RANDOM'}:{song:'ТРЕК',playlist:'ПЛЕЙЛИСТ',empty:'Нет аудиофайлов',shuffle:'СЛУЧАЙНО'};
-return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:transparent;font-family:Arial,sans-serif;color:${s.textColor};overflow:hidden}.stage{width:100%;min-height:100%;display:grid;place-items:center;background:transparent;padding:18px}.phone{width:${s.playerW}px;max-width:96vw;background:${s.bodyColor};border:2px solid rgba(0,0,0,.35);border-radius:17px;padding:22px 13px 26px;box-shadow:0 18px 30px rgba(0,0,0,.12);position:relative}.speaker{width:48px;height:5px;border-radius:999px;background:rgba(255,255,255,.78);margin:0 auto 12px}.screen{background:${s.screenColor};height:${Math.max(360,Math.round(s.playerW*1.42))}px;position:relative;overflow:hidden;padding:42px 14px 14px}.screen:before,.screen:after{content:"";position:absolute;inset:-20%;background:linear-gradient(115deg,transparent 0 35%,rgba(255,255,255,.32) 36% 45%,transparent 46%);pointer-events:none}.screen:after{transform:translateX(45%)}.cover{width:56%;aspect-ratio:1/1;border-radius:14px;background:${s.coverBg};margin:2px auto 16px;display:grid;place-items:center;overflow:hidden}.cover img{width:100%;height:100%;object-fit:cover;display:block}.note{font-size:54px;color:${s.accentColor};filter:drop-shadow(0 3px 0 rgba(0,0,0,.12))}.repo{text-align:center;font-size:11px;letter-spacing:.04em;margin-top:-7px;margin-bottom:12px;opacity:.82;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.song{font-size:11px;text-transform:uppercase;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bar{height:5px;background:rgba(0,0,0,.12);border-radius:999px;cursor:pointer;overflow:hidden}.fill{height:100%;width:0;background:${s.progressColor};border-radius:999px}.time{display:flex;justify-content:space-between;font-size:8px;margin-top:4px}.controls{display:flex;align-items:center;justify-content:space-around;margin-top:16px}.cbtn{border:0;background:transparent;color:${s.accentColor};font-size:24px;line-height:1;cursor:pointer;padding:4px}.play{width:46px;height:46px;border-radius:50%;background:transparent;font-size:34px;display:grid;place-items:center}.mini{font-size:16px;font-weight:900}.active{color:${s.progressColor};text-shadow:0 0 8px ${s.progressColor}}.viz{height:38px;display:flex;gap:4px;align-items:end;justify-content:center;margin-top:10px}.viz i{display:block;width:5px;height:7px;border-radius:999px;background:${s.progressColor};opacity:.55}.playing .viz i{animation:bounce .75s infinite ease-in-out}.viz i:nth-child(2){animation-delay:.1s}.viz i:nth-child(3){animation-delay:.2s}.viz i:nth-child(4){animation-delay:.35s}.viz i:nth-child(5){animation-delay:.05s}@keyframes bounce{0%,100%{height:8px}50%{height:32px}}.plist{position:absolute;left:12px;right:12px;bottom:12px;max-height:58%;overflow:auto;background:rgba(255,255,255,.94);border:1px solid rgba(0,0,0,.12);border-radius:14px;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,.18);display:none;z-index:5}.plist.open{display:block}.plist h3{margin:0 0 8px;font-size:12px}.track{padding:8px;border-radius:10px;font-size:12px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.track:hover,.track.now{background:${s.coverBg}}audio{display:none}</style></head><body><div class="stage"><div class="phone"><div class="speaker"></div><div class="screen"><div class="cover"><img id="cover" src=${jsStr(s.cover)} referrerpolicy="no-referrer" onerror="this.style.display='none';document.getElementById('fallbackNote').style.display='block'" alt=""><div class="note" id="fallbackNote" style="display:none">♪</div></div><div class="repo">${escAttr(s.repoLabel)}</div><div class="song" id="song">${L.song}</div><div class="bar" id="bar"><div class="fill" id="fill"></div></div><div class="time"><span id="cur">0:00</span><span id="dur">0:00</span></div><div class="controls"><button class="cbtn mini" id="shuffle" title="${L.shuffle}">⤨</button><button class="cbtn" id="prev">◀◀</button><button class="cbtn play" id="play">▶</button><button class="cbtn" id="next">▶▶</button><button class="cbtn mini" id="list">☰</button></div><div class="viz"><i></i><i></i><i></i><i></i><i></i></div><div class="plist" id="plist"><h3>${L.playlist}</h3><div id="tracks"></div></div></div><audio id="audio" preload="metadata"></audio></div></div><script>
-const tracks=${JSON.stringify(s.tracks)};const empty=${jsStr(L.empty)};let idx=0,random=false;const a=document.getElementById('audio'),song=document.getElementById('song'),play=document.getElementById('play'),fill=document.getElementById('fill'),cur=document.getElementById('cur'),dur=document.getElementById('dur'),phone=document.querySelector('.phone'),plist=document.getElementById('plist'),tracksBox=document.getElementById('tracks');function fmt(x){if(!isFinite(x))return'0:00';let m=Math.floor(x/60),s=Math.floor(x%60);return m+':'+String(s).padStart(2,'0')}function load(i){if(!tracks.length){song.textContent=empty;return}idx=(i+tracks.length)%tracks.length;a.src=tracks[idx].url;song.textContent=tracks[idx].title||'Audio';[...tracksBox.children].forEach((n,k)=>n.classList.toggle('now',k===idx))}function render(){tracksBox.innerHTML='';tracks.forEach((t,i)=>{let d=document.createElement('div');d.className='track';d.textContent=(i+1)+'. '+(t.title||'Audio');d.onclick=()=>{load(i);a.play();plist.classList.remove('open')};tracksBox.appendChild(d)})}function next(){load(random?Math.floor(Math.random()*tracks.length):idx+1);a.play()}render();load(0);play.onclick=()=>{if(!tracks.length)return;if(a.paused)a.play();else a.pause()};document.getElementById('prev').onclick=()=>{load(idx-1);a.play()};document.getElementById('next').onclick=next;document.getElementById('shuffle').onclick=e=>{random=!random;e.currentTarget.classList.toggle('active',random)};document.getElementById('list').onclick=()=>plist.classList.toggle('open');a.onplay=()=>{play.textContent='❚❚';phone.classList.add('playing')};a.onpause=()=>{play.textContent='▶';phone.classList.remove('playing')};a.ontimeupdate=()=>{fill.style.width=(a.currentTime/(a.duration||1)*100)+'%';cur.textContent=fmt(a.currentTime)};a.onloadedmetadata=()=>dur.textContent=fmt(a.duration);a.onended=next;document.getElementById('bar').onclick=e=>{let r=e.currentTarget.getBoundingClientRect();a.currentTime=((e.clientX-r.left)/r.width)*(a.duration||0)};<\/script></body></html>`;
-}
-function updatePreview(){ const s=settings(); $('preview').style.height=s.frameH+'px'; $('preview').srcdoc=playerHtml(s); setStatus(`Предпросмотр обновлен. Треков: <b>${s.tracks.length}</b>.`); }
-async function resolveAndFill(){
-  try{ setStatus('Ищу аудиофайлы...'); const links= await resolveFolder($('folderLink').value); if(!links.length){setStatus('Аудиофайлы не найдены. Проверь, что mp3 лежат в публичном репозитории.'); return;} $('rawLinks').value=links.join('\n'); mode='raw'; showTab(); setStatus(`Нашла аудиофайлы: <b>${links.length}</b>. Теперь можно жать “Получить код”.`); updatePreview(); }
-  catch(e){ setStatus('Не получилось прочитать папку: '+e.message+'. Вставь прямые mp3-ссылки вручную.'); }
-}
-function makeCode(){ const s=settings(); const html=playerHtml(s); const code=`<iframe srcdoc="${escAttr(html)}" style="width:100%;height:${s.frameH}px;border:0;background:transparent;overflow:hidden;" allow="autoplay"></iframe>`; $('code').value=code; updatePreview(); setStatus(`Код готов. Встроено треков: <b>${s.tracks.length}</b>.`); }
-function showTab(){ $('rawTab').classList.toggle('active',mode==='raw'); $('folderTab').classList.toggle('active',mode==='folder'); $('rawPanel').style.display=mode==='raw'?'block':'none'; $('folderPanel').style.display=mode==='folder'?'block':'none'; }
-$('rawTab').onclick=()=>{mode='raw';showTab()}; $('folderTab').onclick=()=>{mode='folder';showTab()}; $('resolveBtn').onclick=resolveAndFill; $('previewBtn').onclick=updatePreview; $('codeBtn').onclick=makeCode; $('copyBtn').onclick=async()=>{ if(!$('code').value) makeCode(); await navigator.clipboard.writeText($('code').value); setStatus('Код скопирован.'); };
-['lang','repoLabel','bodyColor','screenColor','accentColor','progressColor','coverBg','textColor','playerW','frameH','cover','rawLinks'].forEach(id=>$(id).addEventListener('input',()=>{clearTimeout(window.__t);window.__t=setTimeout(updatePreview,350)}));
-updatePreview(); makeCode();
+play.onclick=()=>{if(!tracks.length)return;if(a.paused)a.play().catch(showAudioError);else a.pause()};
+$('prev').onclick=()=>{load(idx-1);a.play().catch(showAudioError)}; $('next').onclick=next; $('shuffle').onclick=e=>{random=!random;e.currentTarget.classList.toggle('active',random)}; $('list').onclick=()=>plist.classList.toggle('open');
+a.onplay=()=>{play.textContent='❚❚';phone.classList.add('playing')}; a.onpause=()=>{play.textContent='▶';phone.classList.remove('playing')};
+a.ontimeupdate=()=>{fill.style.width=(a.currentTime/(a.duration||1)*100)+'%';cur.textContent=fmt(a.currentTime)}; a.onloadedmetadata=()=>dur.textContent=fmt(a.duration); a.onended=next; a.onerror=()=>status.textContent='Не удалось открыть файл: '+(tracks[idx]?.url||'');
+$('bar').onclick=e=>{let r=e.currentTarget.getBoundingClientRect();a.currentTime=((e.clientX-r.left)/r.width)*(a.duration||0)};
+discover();
 </script>
-</body></html>
+</body>
+</html>
